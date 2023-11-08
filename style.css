@@ -1,39 +1,53 @@
+/* --- CSS RESET --- */
 
-*{
+* {
     padding: 0;
     margin: 0;
     font-family: inherit;
     box-sizing: border-box;
-}
-
-html{
-    background-color: antiquewhite;
-}
-
-#root{
-    background-color: antiquewhite;
+  }
+  
+  /* --- CSS RESET END --- */
+  
+  html {
+    background-color:rgb(180, 211, 180);
+  }
+  
+  div.characters {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
     justify-content: center;
-    padding: 10px;
-}
-.char{
-    border: 1px solid black;
-}
-
-.char h2, h3{
+  
+    padding: 20px;
+  }
+  
+  div.char {
+    border: 2px solid black;
+  }
+  
+  div.char h2, h3 {
     text-align: center;
-}
-
-.char h2{
+  }
+  
+  div.char h2 {
     margin-top: 10px;
-}
-
-.char h3{
+  }
+  
+  div.char h3 {
     margin-bottom: 10px;
-}
-
-div.char img{
+  }
+  
+  div.char img {
     border-bottom: 2px solid black;
-}
+  }
+  
+  div.buttons {
+    margin: 0 auto;
+    width: fit-content;
+  }
+  
+  div.buttons button {
+    padding: 12px 20px;
+    font-size: 24px;
+  }

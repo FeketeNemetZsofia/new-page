@@ -1,29 +1,56 @@
-console.log("loaded")
+const rootElement = document.querySelector("#root")
 
-rootElement = document.querySelector("#root")
+const fetchUrl = (url) => fetch(url).then(res => res.json())
 
-const fetchURL = (url) => fetch(url).then(res => res.json())
-
-const charaComponent = (charaData) => `
-<div class="char">
-<img src=${charaData.image}>
-<h2>${charaData.name}</h2>
-<h3> Appears in: ${charaData.episode.length} episodes</h3>
-</div>
+const skeletonComponent = () => `
+  <div class="characters"></div>
+  <div class="buttons"></div>
 `
 
+const characterComponent = (characterData) => ` 
+  <div class="char">
+    <img src=${characterData.image}>
+    <h2>${characterData.name}</h2>
+    <h3>appears in: ${characterData.episode.length} episodes</h3>
+  </div>
+`
 
+const buttonComponent = (id, text) => `<button id=${id}>${text}</button>`
 
-const init = async () => {
-    fetchURL("https://rickandmortyapi.com/api/character").then(data => {
-        console.log(data)
-        const info = data.info
-        const characters = data.results
+const buttonEventComponent = (id, url) => {
+  const buttonElement = document.querySelector(`#${id}`)
+  buttonElement.addEventListener("click", () => {
+    console.log(`fetch: ${url}`)
+    rootElement.innerHTML = "LOADING..."
+    fetchUrl(url).then(data => makeDomFromData(data, rootElement))
+  })
+}
 
-        characters.forEach(chara => { rootElement.insertAdjacentHTML("beforeend", charaComponent(chara))
-            
-        });
-    })
+const makeDomFromData = (data, rootElement) => {
+  rootElement.innerHTML = skeletonComponent()
+
+  const charactersElement = document.querySelector(".characters")
+  const buttonsElement = document.querySelector(".buttons") 
+
+  const info = data.info
+  const characters = data.results
+
+  characters.forEach(character => charactersElement.insertAdjacentHTML("beforeend", characterComponent(character)))
+
+  if (info.prev) {
+    buttonsElement.insertAdjacentHTML("beforeend", buttonComponent("prev", "previous"))
+    buttonEventComponent("prev", info.prev)
+  }
+
+  if (info.next) {
+    buttonsElement.insertAdjacentHTML("beforeend", buttonComponent("next", "next"))
+    buttonEventComponent("next", info.next)
+  }
+}
+
+const init = () => {
+  rootElement.innerHTML = "LOADING..."
+  fetchUrl("https://rickandmortyapi.com/api/character").then(data => makeDomFromData(data, rootElement))
 }
 
 init()
